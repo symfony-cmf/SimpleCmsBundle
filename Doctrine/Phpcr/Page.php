@@ -20,8 +20,8 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
-
 use Symfony\Component\Validator\Constraints as Assert;
+use PHPCR\Util\UUIDHelper;
 
 /**
  * This is the standard Simple CMS Page document.
@@ -669,4 +669,25 @@ class Page extends Route implements
     {
         parent::setOptions($options);
     }
+    
+
+    /**
+     * Retrieve Identifier of Node
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->getNode()->getIdentifier();
+    }
+
+    /**
+     * Retrieve UUID of Node Or null if not present
+     *
+     * @return mixed|null
+     */
+    public function getUUID()
+    {
+        return UUIDHelper::isUUID($this->getIdentifier()) ? $this->getIdentifier() : null;
+    }    
 }
