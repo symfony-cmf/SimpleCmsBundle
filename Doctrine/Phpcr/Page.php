@@ -20,6 +20,7 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
+use PHPCR\NodeInterface as PHPCRNodeInterface;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -677,6 +678,6 @@ class Page extends Route implements
      */
     public function getUUID()
     {
-        return $this->getNode()->getIdentifier();
+        return $this->getNode() instanceof PHPCRNodeInterface ? $this->getNode()->getIdentifier() : null;
     }    
 }
