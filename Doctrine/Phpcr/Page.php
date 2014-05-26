@@ -674,10 +674,12 @@ class Page extends Route implements
     /**
      * Retrieve UUID of Node or null if not present
      *
-     * @return mixed|null
+     * @return string|null
      */
     public function getUUID()
     {
-        return $this->getNode() instanceof PHPCRNodeInterface ? $this->getNode()->getIdentifier() : null;
+        $node = $this->getNode();
+        
+        return $node instanceof PHPCRNodeInterface ? $node->getIdentifier() : null;
     }    
 }
