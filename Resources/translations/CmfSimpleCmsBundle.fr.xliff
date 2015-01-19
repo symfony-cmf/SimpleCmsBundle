@@ -50,9 +50,9 @@
         <source>filter.label_name</source>
         <target>Nom</target>
       </trans-unit>
-      <trans-unit id="form.group_general">
-        <source>form.group_general</source>
-        <target>Général</target>
+      <trans-unit id="form.group_content">
+        <source>form.group_content</source>
+        <target>Contenu</target>
       </trans-unit>
       <trans-unit id="form.label_parent">
         <source>form.label_parent</source>

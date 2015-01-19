@@ -54,9 +54,9 @@
         <source>filter.label_name</source>
         <target>Názov</target>
       </trans-unit>
-      <trans-unit id="form.group_general">
-        <source>form.group_general</source>
-        <target>Všeobecné</target>
+      <trans-unit id="form.group_content">
+        <source>form.group_content</source>
+        <target>Obsah</target>
       </trans-unit>
       <trans-unit id="form.label_parent">
         <source>form.label_parent</source>
