@@ -10,6 +10,7 @@ class AppKernel extends TestKernel
         $this->requireBundleSets(array(
             'default',
             'phpcr_odm',
+            'doctrine_orm',
             'sonata_admin_phpcr',
         ));
 

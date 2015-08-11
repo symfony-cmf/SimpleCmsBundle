@@ -14,6 +14,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.9",
+        "doctrine/orm": "~2.2,>=2.2.3,<2.5",
         "symfony/framework-bundle": "~2.3",
         "symfony-cmf/core-bundle": "~1.1",
         "symfony-cmf/routing-bundle": "~1.2",
@@ -24,6 +25,7 @@
     },
     "require-dev": {
         "symfony-cmf/testing": "~1.2,>=1.2.6",
+        "symfony/security-acl": "~2.7",
         "matthiasnoback/symfony-dependency-injection-test": "~0.6",
         "matthiasnoback/symfony-config-test": "0.*",
         "phpunit/phpunit": "@stable",
@@ -38,6 +40,9 @@
     "autoload": {
         "psr-4": {
             "Symfony\\Cmf\\Bundle\\SimpleCmsBundle\\": ""
+        },
+        "psr-0": {
+            "Doctrine\\ORM\\": "vendor/doctrine/orm/lib/"
         }
     },
     "conflicts": {

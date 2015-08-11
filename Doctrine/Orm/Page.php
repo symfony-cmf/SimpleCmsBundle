@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Phpcr;
+namespace Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Orm;
 
+use Doctrine\Common\Collections\Collection;
 use LogicException;
 use Knp\Menu\NodeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,9 +20,8 @@ use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishTimePeriodInterface;
 use Symfony\Cmf\Bundle\CoreBundle\PublishWorkflow\PublishableInterface;
 use Symfony\Cmf\Bundle\CoreBundle\Translatable\TranslatableInterface;
 use Symfony\Cmf\Bundle\MenuBundle\Model\MenuOptionsInterface;
-use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Phpcr\Route;
+use Symfony\Cmf\Bundle\RoutingBundle\Doctrine\Orm\Route;
 use Symfony\Cmf\Component\Routing\RouteReferrersReadInterface;
-use PHPCR\NodeInterface as PHPCRNodeInterface;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,13 +41,12 @@ class Page extends Route implements
     RouteReferrersReadInterface, // this must not be the write interface, it would make no sense
     PublishTimePeriodInterface,
     PublishableInterface,
-    MenuOptionsInterface,
-    TranslatableInterface
+    MenuOptionsInterface
 {
     /**
-     * @var PHPCRNodeInterface
+     * @var integer
      */
-    protected $node;
+    protected $id;
 
     /**
      * @Assert\NotBlank
@@ -142,66 +141,27 @@ class Page extends Route implements
     protected $publishable = true;
 
     /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
      * Extra values an application can store along with a page
      * @var array
      */
     protected $extras = array();
 
     /**
-     * @deprecated use getOption('add_locale_pattern') instead
+     * @var Page
      */
-    public function getAddLocalePattern()
-    {
-        return $this->getOption('add_locale_pattern');
-    }
+    protected $parent;
 
     /**
-     * @deprecated use setOption('add_locale_pattern', $bool) instead
+     * @var Page[]|Collection
      */
-    public function setAddLocalePattern($addLocalePattern)
-    {
-        $this->setOption('add_locale_pattern', $addLocalePattern);
-    }
+    protected $children;
 
     /**
-     * @return PHPCRNodeInterface
+     * @return int
      */
-    public function getNode()
+    public function getId()
     {
-        return $this->node;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
-     * @deprecated Since 1.1 we only have the publish start date
-     *
-     * This method is kept for BC but will return the result of getDate().
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->getDate();
+        return $this->id;
     }
 
     /**
@@ -657,6 +617,22 @@ class Page extends Route implements
     }
 
     /**
+     * @return Page
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param Page $parent
+     */
+    public function setParent(Page $parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
      * Route method and Menu method - provides menu options merged with the
      * route options
      *
@@ -686,17 +662,5 @@ class Page extends Route implements
     public function setRouteOptions(array $options)
     {
         parent::setOptions($options);
-    }
-
-    /**
-     * Retrieve UUID of Node or null if not present
-     *
-     * @return string|null
-     */
-    public function getUUID()
-    {
-        $node = $this->getNode();
-
-        return $node instanceof PHPCRNodeInterface ? $node->getIdentifier() : null;
     }
 }

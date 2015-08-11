@@ -1,0 +1,35 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+
+    <entity name="Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Orm\Page" table="orm_pages">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="title" type="string"/>
+        <field name="label" type="string"/>
+        <field name="attributes" type="array"/>
+        <field name="childrenAttributes" type="array"/>
+        <field name="linkAttributes" type="array"/>
+        <field name="labelAttributes" type="array"/>
+        <field name="display" type="boolean"/>
+        <field name="displayChildren" type="boolean"/>
+        <field name="body" type="text"/>
+        <field name="publishStartDate" type="datetime" nullable="true"/>
+        <field name="publishEndDate" type="datetime" nullable="true"/>
+        <field name="publishable" type="boolean"/>
+        <field name="extras" type="array"/>
+
+        <one-to-many target-entity="Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Orm\Page"
+                     field="children" mapped-by="parent" />
+
+        <many-to-one target-entity="Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Orm\Page"
+                     field="parent" inversed-by="children">
+            <join-column name="parent_id" referenced-column-name="id" />
+        </many-to-one>
+
+    </entity>
+
+</doctrine-mapping>
