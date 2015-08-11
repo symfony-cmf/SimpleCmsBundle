@@ -16,31 +16,40 @@ use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class HttpStatusCodeTest extends BaseTestCase
 {
-    public function setUp()
-    {
-        $this->db('PHPCR')->loadFixtures(array(
-            'Symfony\Cmf\Bundle\SimpleCmsBundle\Tests\Resources\DataFixtures\Phpcr\LoadPageData',
-        ));
-        $this->client = $this->createClient();
-    }
-
     public function provideStatusCodeTest()
     {
         return array(
-            array('/', 301),
-            array('/en/homepage'),
-            array('/en/french-page'),
-            array('/no-locale-prefix'),
+            array('orm', '/', 301),
+            array('orm', '/en/homepage'),
+            array('orm', '/en/french-page'),
+            array('orm', '/no-locale-prefix'),
+            array('phpcr', '/', 301),
+            array('phpcr', '/en/homepage'),
+            array('phpcr', '/en/french-page'),
+            array('phpcr', '/no-locale-prefix'),
         );
     }
 
     /**
      * @dataProvider provideStatusCodeTest
      */
-    public function testStatusCode($url, $expectedStatusCode = 200)
+    public function testStatusCode($persistanceLayer, $url, $expectedStatusCode = 200)
     {
-        $this->client->request('GET', $url);
-        $res = $this->client->getResponse();
-        $this->assertEquals($expectedStatusCode, $res->getStatusCode());
+        if ('phpcr' === $persistanceLayer) {
+            $this->db('PHPCR')->loadFixtures(array(
+                'Symfony\Cmf\Bundle\SimpleCmsBundle\Tests\Resources\DataFixtures\Phpcr\LoadPageData',
+            ));
+        } elseif ('orm' === $persistanceLayer) {
+            $this->db('ORM')->loadFixtures(array(
+                'Symfony\Cmf\Bundle\SimpleCmsBundle\Tests\Resources\DataFixtures\Orm\LoadPageData',
+            ));
+        }
+
+        $client = $this->createClient();
+        $client->request('GET', $url);
+
+        $response = $client->getResponse();
+
+        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
     }
 }

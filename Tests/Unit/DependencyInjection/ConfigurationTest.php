@@ -42,6 +42,12 @@ class ConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'sort' => 'asc',
                     )
                 ),
+                'orm' => array(
+                    'enabled' => false,
+                    'manager_registry' => 'doctrine',
+                    'manager_name' => null,
+                    'entity_class' => 'Symfony\Cmf\Bundle\SimpleCmsBundle\Doctrine\Orm\Page',
+                ),
             ),
             'use_menu' => false,
         );
