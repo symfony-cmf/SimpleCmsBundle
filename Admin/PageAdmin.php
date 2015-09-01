@@ -52,22 +52,28 @@ class PageAdmin extends RouteAdmin
         $formMapper->remove('options');
 
         $formMapper
-            ->with('form.group_general', array(
-                'translation_domain' => 'CmfSimpleCmsBundle',
-            ))
-                ->add('label', null, array('required' => false))
-                ->add('title')
-                ->add('body', 'textarea')
+            ->tab('form.tab_general')
+                ->with('form.group_general', array(
+                    'class' => 'col-md-9',
+                    'translation_domain' => 'CmfSimpleCmsBundle',
+                ))
+                    ->add('label', null, array('required' => false))
+                    ->add('title')
+                    ->add('body', 'textarea', array(
+                        'attr' => array('style' => 'height:200px;'),
+                    ))
+                ->end()
             ->end()
-            ->with('form.group_advanced', array(
-                'translation_domain' => 'CmfRoutingBundle',
-            ))
-                ->add(
-                    'routeOptions',
-                    'sonata_type_immutable_array',
-                    array('keys' => $this->configureFieldsForOptions($this->getSubject()->getRouteOptions()), 'label' => 'form.label_options'),
-                    array('help' => 'form.help_options')
-                )
+
+            ->tab('form.tab_routing')
+                ->with('form.group_path')
+                    ->add(
+                        'routeOptions',
+                        'sonata_type_immutable_array',
+                        array('keys' => $this->configureFieldsForOptions($this->getSubject()->getRouteOptions()), 'label' => 'form.label_options'),
+                        array('help' => 'form.help_options')
+                    )
+                ->end()
             ->end()
         ;
     }
