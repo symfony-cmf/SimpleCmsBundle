@@ -15,6 +15,7 @@ use Symfony\Cmf\Bundle\SimpleCmsBundle\DependencyInjection\Compiler\AppendRouteB
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
+use Symfony\Cmf\Component\Routing\DependencyInjection\Compiler\RegisterRouteEnhancersPass;
 
 class CmfSimpleCmsBundle extends Bundle
 {
@@ -40,5 +41,8 @@ class CmfSimpleCmsBundle extends Bundle
                 )
             );
         }
+
+        // Allow tagged route enhancers
+        $container->addCompilerPass(new RegisterRouteEnhancersPass('cmf_simple_cms.dynamic_router'));
     }
 }
